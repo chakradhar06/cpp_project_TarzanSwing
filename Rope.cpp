@@ -38,8 +38,12 @@
         seperation = pow(seperation,0.5);
 //        double acc = K*(seperation - originalLen);///meNode->getMass();
         double tension;
+        
+        //cloclwise counterclockwise issue resolution
         bool counterClock = true;
-        if(initialPosn.x - otherNode->getPosn().x > 0)
+        if(initialPosn.x - otherNode->getPosn().x > 0 && initialVel.Vy>0)
+            counterClock = false;
+        if(initialPosn.x - otherNode->getPosn().x < 0 && initialVel.Vy<0)
             counterClock = false;
 
         double XwrtO = meNode->getPosn().x - otherNode->getPosn().x;
@@ -87,11 +91,12 @@
             else
             {
                 double theta = atan(XwrtO/YwrtO);
-
+                
                 //1st quadrant tick
                 //sin+ cos+
                 if(XwrtO>0 && YwrtO<0)
                 {
+//                    std::cout<<"1st  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(-Vnet*cos(theta));
                     meNode->setVel_y(Vnet*sin(theta));
                 }
@@ -99,6 +104,7 @@
                 //sin- cos+
                 else if(XwrtO>0 && YwrtO>0)
                 {
+//                    std::cout<<"2nd  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(Vnet*cos(theta));
                     meNode->setVel_y(-Vnet*sin(theta));
                 }
@@ -106,6 +112,7 @@
                 //sin- cos-
                 else if(XwrtO<0 && YwrtO>0)
                 {
+//                    std::cout<<"3rd  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(Vnet*cos(theta));
                     meNode->setVel_y(-Vnet*sin(theta));
                 }
@@ -113,6 +120,7 @@
                 //sin+ cos-
                 else if(XwrtO<0 && YwrtO<0)
                 {
+//                    std::cout<<"4th  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(-Vnet*cos(theta));
                     meNode->setVel_y(Vnet*sin(theta));
                 }
@@ -145,6 +153,7 @@
                 //sin+ cos+
                 if(XwrtO>0 && YwrtO<0)
                 {
+//                    std::cout<<"1st  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(Vnet*cos(theta));
                     meNode->setVel_y(-Vnet*sin(theta));
                 }
@@ -152,6 +161,7 @@
                 //sin- cos+
                 else if(XwrtO>0 && YwrtO>0)
                 {
+//                    std::cout<<"2nd  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(-Vnet*cos(theta));
                     meNode->setVel_y(Vnet*sin(theta));
                 }
@@ -159,6 +169,7 @@
                 //sin- cos-
                 else if(XwrtO<0 && YwrtO>0)
                 {
+//                    std::cout<<"3rd  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(-Vnet*cos(theta));
                     meNode->setVel_y(Vnet*sin(theta));
                 }
@@ -166,6 +177,7 @@
                 //sin+ cos-
                 else if(XwrtO<0 && YwrtO<0)
                 {
+//                    std::cout<<"4th  "<<meNode->getVel().Vy<<std::endl;
                     meNode->setVel_x(Vnet*cos(theta));
                     meNode->setVel_y(-Vnet*sin(theta));
                 }
