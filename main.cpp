@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 
 #include "RenderWindow.h"
 #include "Object.hpp"
@@ -22,13 +23,19 @@ int main(int argc, char* args[])
 
     bool gameRunning = true;
     bool Roped = false;
+    bool slack = false;
 
     SDL_Event event;
     
+    std::vector<class Object*> enemyList;
+    
     //Instantiating main object and enemy object before game loop starts
-    class Me* mainObject = new Me(400,30,30,0,0);
-    class Object* enemy = new Object(500,300,30);
-    class Rope* aRope = new Rope(mainObject,enemy);
+    class Me* mainObject = new Me(600,30,15,0,0);
+    class Object* enemy = new Object(500,300,10);
+    class Object* enemy2 = new Object(800,400,10);
+    enemyList.push_back(enemy);
+    enemyList.push_back(enemy2);
+    class Rope* aRope = new Rope();
     class eventManager* anEvent = new eventManager();
 
     while (gameRunning)
@@ -39,21 +46,34 @@ int main(int argc, char* args[])
             if (event.type == SDL_QUIT)
                 gameRunning = false;
             if(event.type == SDL_MOUSEBUTTONDOWN)
-                Roped = anEvent->MouseClick(event.button,aRope);
+                Roped = anEvent->MouseClick(event.button,aRope,mainObject,enemyList);
         }
 
         window.clear();
         window.render(grassTexture);
-//        aRope->RopeCalculus();
-        bool collided = mainObject->CheckCollision(mainObject, enemy);
+        
+        //checkCollision, if collision occurs, end program
+        bool collided = mainObject->CheckCollision(mainObject, enemyList);
         if(collided) exit(1);
+        
         window.drawObject(mainObject);
-        window.drawAnotherObject(enemy);
+        window.drawAnotherObject(enemyList);
         if(Roped)
         {
             mainObject->setAcc_y(0);
-            window.drawLine(mainObject, enemy);
-            Roped = aRope->RopeCalculus();
+            window.drawLine(mainObject, aRope->getEnemy());
+            slack = aRope->RopeCalculus(slack);
+            if(slack)
+            {
+                aRope->setSlackOccurence(mainObject->getPosn());
+                Roped = false;
+            }
+        }
+        else if(slack)
+        {
+            
+            slack = aRope->RopeCalculus(slack);
+            if(slack == false) Roped = true;
         }
         else
             mainObject->setAcc_y(g);

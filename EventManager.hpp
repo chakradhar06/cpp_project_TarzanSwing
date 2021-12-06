@@ -9,6 +9,8 @@
 #define EventManager_hpp
 
 #include <stdio.h>
+#include <vector>
+
 #include "Rope.hpp"
 #include "RenderWindow.h"
 #include "me.hpp"
@@ -19,7 +21,7 @@
 class eventManager{
 public:
 //    eventManager();
-    bool MouseClick(SDL_MouseButtonEvent& b, Rope* aRope);
+    bool MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList);
 };
 
 #endif /* EventManager_hpp */

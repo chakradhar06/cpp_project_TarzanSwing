@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Object.hpp"
@@ -37,7 +38,7 @@ public:
     Me(double x,double y, double len, double vx, double vy);
     
     //Collision Detection
-    bool CheckCollision(class Me* me, class Object* other);
+    bool CheckCollision(class Me* me, std::vector<Object*> enemyList);
     void UpdatePosn();
     
     //getters

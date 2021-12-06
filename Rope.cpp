@@ -7,10 +7,19 @@
 
 #include "Rope.hpp"
 #include <iostream>
-    Rope::Rope(Me* meNode,Object* otherNode)
+    void Rope::setEnemy(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList)
     {
-        this->meNode = meNode;
-        this->otherNode = otherNode;
+        double enemyMouseDistance = INT_MAX;
+        for(auto it: enemyList)
+        {
+            double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
+            if(seperation < enemyMouseDistance)
+            {
+                otherNode = it;
+                enemyMouseDistance = seperation;
+            }
+        }
+        meNode = hero;
         initialPosn = meNode->getPosn();
         initialVel = meNode->getVel();
         ropeLength = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
@@ -23,7 +32,7 @@
         return seperation;
     }
     
-    bool Rope::RopeCalculus()
+    bool Rope::RopeCalculus(bool slack)
     {
         double seperation = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
         seperation = pow(seperation,0.5);
@@ -37,10 +46,24 @@
         double YwrtO = meNode->getPosn().y - otherNode->getPosn().y;
         double Vsqr = pow(initialVel.Vx,2) + pow(initialVel.Vy,2) + 2*g*(meNode->getPosn().y - initialPosn.y);
         //When rope slacks
+        if(slack)
+        {
+            //Slack mechanics
+            meNode->setAcc_y(g);
+            double SlackDiffY = otherNode->getPosn().y - slackOccurence.y;
+            if(otherNode->getPosn().y - meNode->getPosn().y <= -SlackDiffY)
+            {
+                initialPosn = meNode->getPosn();
+                initialVel = meNode->getVel();
+                std::cout<<"SLACK"<<std::endl;
+                return false;
+            }
+            return true;
+        }
         if(Vsqr < 0)
         {
             std::cout<<Vsqr<<std::endl;
-            return false;
+            return true;
         }
         //Normal condition
         else if(counterClock == true)
@@ -149,6 +172,6 @@
                 
             }
         }
-        return true;
+        return false;
     }
         

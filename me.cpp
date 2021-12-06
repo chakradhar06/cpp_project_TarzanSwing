@@ -17,15 +17,17 @@
     }
     
     //Collision Detection
-    bool Me::CheckCollision(class Me* me, class Object* other)
+    bool Me::CheckCollision(class Me* me, std::vector<Object*> enemyList)
     {
-        double rIdeal = me->len + other->getLen();
-        rIdeal *= rIdeal;
-        double Seperation = pow( (me->posn.x - other->getPosn().x),2 ) + pow( (me->posn.y - other->getPosn().y),2 );
-        if(Seperation <= rIdeal)
-            return true;
-        else
-            return false;
+        for(auto it: enemyList)
+        {
+            double rIdeal = me->len + it->getLen();
+            rIdeal *= rIdeal;
+            double Seperation = pow( (me->posn.x - it->getPosn().x),2 ) + pow( (me->posn.y - it->getPosn().y),2 );
+            if(Seperation <= rIdeal)
+                return true;
+        }
+        return false;
     }
     
     void Me::UpdatePosn()

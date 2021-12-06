@@ -44,19 +44,22 @@ void RenderWindow::drawObject(Me* obj)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
-void RenderWindow::drawAnotherObject(Object* obj)
+void RenderWindow::drawAnotherObject(std::vector<Object*> enemyList)
 {
-    SDL_Rect rect;
-    rect.x = obj->getPosn().x;
-    rect.y = obj->getPosn().y;
-    rect.w = obj->getLen();
-    rect.h = obj->getLen();
+    for(auto it: enemyList)
+    {
+        SDL_Rect rect;
+        rect.x = it->getPosn().x;
+        rect.y = it->getPosn().y;
+        rect.w = it->getLen();
+        rect.h = it->getLen();
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &rect);
-    SDL_RenderFillRect(renderer, &rect);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderDrawRect(renderer, &rect);
+        SDL_RenderFillRect(renderer, &rect);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    }
 }
 
 void RenderWindow::drawLine(Me* o1, Object* o2)
