@@ -82,7 +82,7 @@ void RenderWindow::drawFrendObject(std::vector<Object*> frendList)
 
 void RenderWindow::drawLine(Me* o1, Object* o2)
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
     SDL_RenderDrawLine(renderer, o1->getPosn().x, o1->getPosn().y, o2->getPosn().x, o2->getPosn().y);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 //    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

@@ -35,29 +35,25 @@ int main(int argc, char* args[])
     std::vector<class Object*> frendList;
     
     //Instantiating main object and enemy object before game loop starts
-    class Me* mainObject = new Me(600,30,15,0,0);
+    class Me* mainObject = new Me(600,400,15,0,0);
     
     //Generating random Frend and Enemy Objects
     srand(time(0));
-    for(int i=0;i<5;i++)
+    for(int i=0;i<2;i++)
     {
         double randX = rand() % WindowWidth;
         double randY = rand() % WindowHeight;
         Object* temp = new Object(true,randX,randY,20);
         enemyList.push_back(temp);
     }
-    for(int i=0;i<8;i++)
+    for(int i=0;i<100;i++)
     {
         double randX = rand() % WindowWidth;
         double randY = rand() % WindowHeight;
         Object* temp = new Object(false,randX,randY,20);
         frendList.push_back(temp);
     }
-    
-//    class Object* enemy = new Object(true,500,100,20);
-//    class Object* enemy2 = new Object(true,800,400,20);
-//    enemyList.push_back(enemy);
-//    enemyList.push_back(enemy2);
+
     class Rope* aRope = new Rope();
     class eventManager* anEvent = new eventManager();
     bool collided = false;
@@ -83,6 +79,8 @@ int main(int argc, char* args[])
         ScoredObjectIndex = mainObject->CheckScoreHit(mainObject, frendList);
         if(ScoredObjectIndex != -1)
         {
+            TotalScore += 100;
+            std::cout<<TotalScore<<std::endl; 
             delete(frendList[ScoredObjectIndex]);
             frendList[ScoredObjectIndex] = NULL;
             frendList.erase(frendList.begin()+ScoredObjectIndex);
@@ -98,23 +96,29 @@ int main(int argc, char* args[])
             {
                 mainObject->setAcc_y(0);
                 window.drawLine(mainObject, aRope->getTarget());
-                slack = aRope->RopeCalculus(slack);
+                slack = aRope->RopeCalculus(slack,enemyList,frendList);
                 if(slack)
                 {
-                    aRope->setSlackOccurence(mainObject->getPosn());
+                    aRope->setSlackOccurence(aRope->giveOther()->getPosn());
                     Roped = false;
                 }
             }
             else if(slack)
             {
-                
-                slack = aRope->RopeCalculus(slack);
+                for(auto it:enemyList) it->setAcc_y(-gravity);
+                for(auto it:frendList) it->setAcc_y(-gravity);
+                slack = aRope->RopeCalculus(slack,enemyList,frendList);
                 if(slack == false) Roped = true;
             }
             else
-                mainObject->setAcc_y(g);
+            {
+//                mainObject->setAcc_y(gravity);
+                for(auto it:enemyList) it->setAcc_y(-gravity);
+                for(auto it:frendList) it->setAcc_y(-gravity);
+            }
             
-            mainObject->UpdatePosn();
+            for(auto it:enemyList) it->UpdatePosn();
+            for(auto it:frendList) it->UpdatePosn();
         }
         
         else if(collided)
@@ -124,7 +128,7 @@ int main(int argc, char* args[])
         
         window.display();
 //        std::cout<<mainObject->getPosn().x<<" "<<mainObject->getPosn().y<<std::endl;
-        std::cout<<TotalScore<<std::endl; 
+        
 
     }
         

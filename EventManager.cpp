@@ -15,8 +15,12 @@ bool eventManager::MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObje
     {
         std::cout<<"DANCE"<<std::endl;
         aRope->setTarget(b, mainObject, enemyList, frendList);
-        aRope->setInitialPosn(aRope->giveMe()->getPosn());
-        aRope->setInitialVel(aRope->giveMe()->getVel());
+//        aRope->setInitialPosn(aRope->giveMe()->getPosn());
+        aRope->setInitialPosn(aRope->giveOther()->getPosn());
+        
+//        aRope->setInitialVel(aRope->giveMe()->getVel());
+        aRope->setInitialVel(aRope->giveOther()->getVel());
+        
         aRope->setRopeLength( aRope->giveInitialSep() );
 //        aRope->RopeCalculus();
         return true;

@@ -15,20 +15,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Object.hpp"
-#define g .05
+
 
 using namespace std;
-
-//struct Vec2{
-//    double x,y;
-//};
-struct Vel2{
-    double Vx=0,Vy=0;
-};
-struct Acc2{
-    double Ax =0;
-    double Ay =g;//under constant affect of gravity
-};
 
 class Me{
 private:

@@ -15,6 +15,7 @@
         height = len;
         velocity.Vx = vx;
         velocity.Vy = vy;
+        acceleration.Ay=0;
     }
     
     //Collision Detection

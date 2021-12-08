@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <vector>
-#include <climits>
 #include "Object.hpp"
 #include "me.hpp"
 #define K 0.0005
@@ -28,12 +27,13 @@ private:
 //    double K, originalLen;
 public:
 //    Rope(Me* meNode,Object* otherNode);
-    bool RopeCalculus(bool slack);
+    bool RopeCalculus(bool slack,std::vector<Object*> enemyList, std::vector<Object*> frendList);
     
     void setInitialPosn(Vec2 posn){initialPosn = posn;}
     void setInitialVel(Vel2 vel){initialVel = vel;}
     void setRopeLength(double len){ropeLength = len;}
     Me* giveMe(){return meNode;}
+    Object* giveOther(){return otherNode;}
     double giveInitialSep();
     void setSlackOccurence(Vec2 posn){slackOccurence = posn;}
     
