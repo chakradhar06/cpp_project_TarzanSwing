@@ -9,12 +9,12 @@
 #include <iostream>
 
 
-bool eventManager::MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList)
+bool eventManager::MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList, std::vector<Object*> frendList)
 {
     if(b.button == SDL_BUTTON_LEFT)
     {
         std::cout<<"DANCE"<<std::endl;
-        aRope->setEnemy(b, mainObject, enemyList);
+        aRope->setTarget(b, mainObject, enemyList, frendList);
         aRope->setInitialPosn(aRope->giveMe()->getPosn());
         aRope->setInitialVel(aRope->giveMe()->getVel());
         aRope->setRopeLength( aRope->giveInitialSep() );

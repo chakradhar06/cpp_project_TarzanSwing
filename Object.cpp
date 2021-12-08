@@ -7,11 +7,12 @@
 
 #include "Object.hpp"
 
-    Object::Object(double x,double y, double len)
+    Object::Object(bool evil, double x,double y, double len)
     {
         posn.x = x;
         posn.y = y;
         this->len = len;
+        this->evil = evil;
     }
     //getters
     double Object::getLen(){return len;}

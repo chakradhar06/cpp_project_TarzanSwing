@@ -9,12 +9,15 @@
 #define me_hpp
 
 #include <stdio.h>
+#include <iostream>
 #include <math.h>
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Object.hpp"
 #define g .05
+
+using namespace std;
 
 //struct Vec2{
 //    double x,y;
@@ -32,20 +35,23 @@ private:
     Vec2 posn;
     Vel2 velocity;
     Acc2 acceleration;
-    double len;
+    double width, height;
     double mass = 1000;
 public:
     Me(double x,double y, double len, double vx, double vy);
     
     //Collision Detection
     bool CheckCollision(class Me* me, std::vector<Object*> enemyList);
+    int CheckScoreHit(class Me* me, std::vector<Object*> frendList);
+    
     void UpdatePosn();
     
     //getters
     Vec2 getPosn();
     Vel2 getVel();
     Acc2 getAcc();
-    double getRadius();
+    double getWidth();
+    double getHeight();
     double getMass();
     
     //setters

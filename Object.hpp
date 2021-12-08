@@ -19,8 +19,9 @@ class Object{
 private:
     Vec2 posn;
     double len;
+    bool evil;
 public:
-    Object(double x,double y, double len);
+    Object(bool evil, double x,double y, double len);
     //getters
     double getLen();
     Vec2 getPosn();

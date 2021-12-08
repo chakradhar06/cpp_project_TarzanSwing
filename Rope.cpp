@@ -7,16 +7,25 @@
 
 #include "Rope.hpp"
 #include <iostream>
-    void Rope::setEnemy(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList)
+    void Rope::setTarget(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList, std::vector<Object*> frendList)
     {
-        double enemyMouseDistance = INT_MAX;
+        double targetMouseDistance = INT_MAX;
         for(auto it: enemyList)
         {
             double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
-            if(seperation < enemyMouseDistance)
+            if(seperation < targetMouseDistance)
             {
                 otherNode = it;
-                enemyMouseDistance = seperation;
+                targetMouseDistance = seperation;
+            }
+        }
+        for(auto it: frendList)
+        {
+            double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
+            if(seperation < targetMouseDistance)
+            {
+                otherNode = it;
+                targetMouseDistance = seperation;
             }
         }
         meNode = hero;

@@ -21,7 +21,7 @@
 class eventManager{
 public:
 //    eventManager();
-    bool MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList);
+    bool MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList, std::vector<Object*> frendList);
 };
 
 #endif /* EventManager_hpp */

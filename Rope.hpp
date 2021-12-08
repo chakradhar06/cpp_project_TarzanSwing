@@ -36,8 +36,8 @@ public:
     double giveInitialSep();
     void setSlackOccurence(Vec2 posn){slackOccurence = posn;}
     
-    void setEnemy(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList);
-    Object* getEnemy(){return otherNode;}
+    void setTarget(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList, std::vector<Object*> frendList);
+    Object* getTarget(){return otherNode;}
 };
 
 #endif /* Rope_hpp */

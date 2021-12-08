@@ -11,7 +11,8 @@
     {
         posn.x = x;
         posn.y = y;
-        this->len = len;
+        width = 1.5*len;
+        height = len;
         velocity.Vx = vx;
         velocity.Vy = vy;
     }
@@ -21,13 +22,32 @@
     {
         for(auto it: enemyList)
         {
-            double rIdeal = me->len + it->getLen();
+            double rIdeal = me->getWidth() + it->getLen();
             rIdeal *= rIdeal;
             double Seperation = pow( (me->posn.x - it->getPosn().x),2 ) + pow( (me->posn.y - it->getPosn().y),2 );
             if(Seperation <= rIdeal)
                 return true;
         }
         return false;
+    }
+    
+    int Me::CheckScoreHit(class Me* me, std::vector<Object*> frendList)
+    {
+        for(int i = 0;i<frendList.size();i++)
+        {
+            double rIdeal = me->getWidth() + frendList[i]->getLen();
+            rIdeal *= rIdeal;
+            double Seperation = pow( (me->posn.x - frendList[i]->getPosn().x),2 ) + pow( (me->posn.y - frendList[i]->getPosn().y),2 );
+            if(Seperation <= rIdeal)
+            {
+                
+                if(frendList[i] != NULL)
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
     
     void Me::UpdatePosn()
@@ -50,7 +70,8 @@
     Vec2 Me::getPosn(){return posn;}
     Vel2 Me::getVel(){return velocity;}
     Acc2 Me::getAcc(){return acceleration;}
-    double Me::getRadius(){return len;}
+    double Me::getWidth(){return width;}
+    double Me::getHeight(){return height;}
     double Me::getMass(){return mass;}
     
     //setters

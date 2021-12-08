@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
 #include <vector>
 #include "Object.hpp"
 #include "me.hpp"
@@ -15,8 +17,11 @@ public:
     void render(SDL_Texture* p_tex);
     void display();
     void drawObject(Me* obj);
-    void drawAnotherObject(std::vector<Object*> enemyList);
+    void drawEnemyObject(std::vector<Object*> enemyList);
+    void drawFrendObject(std::vector<Object*> frendList);
     void drawLine(Me* o1, Object* o2);
+    
+    void dealTheDead();
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
