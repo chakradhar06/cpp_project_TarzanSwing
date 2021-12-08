@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <vector>
+#include <climits>
 #include "Object.hpp"
 #include "me.hpp"
 #define K 0.0005
