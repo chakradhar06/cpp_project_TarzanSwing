@@ -39,6 +39,7 @@ public:
     
     void setTarget(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList, std::vector<Object*> frendList);
     Object* getTarget(){return otherNode;}
+    Vec2 getSlackOccurence(){return slackOccurence;}
 };
 
 #endif /* Rope_hpp */

@@ -8,6 +8,22 @@
 #include "EventManager.hpp"
 #include <iostream>
 
+bool eventManager::Exit_MouseClick(int x, int y, int text_width, int scr_width){
+    int k1 = (scr_width - text_width)/2;
+    int k2 = (scr_width + text_width)/2;
+    if((x>=k1) && (x<=k2) && (y>=600) && (y<=600+38))
+        return false;
+    return true;
+}
+
+bool eventManager::Play_MouseClick(int x, int y, int text_width, int scr_width){
+    int k1 = (scr_width - text_width)/2;
+    int k2 = (scr_width + text_width)/2;
+    if((x>=k1) && (x<=k2) && (y>=350) && (y<=350+38))
+        return true;
+    return false;
+}
+
 
 bool eventManager::MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList, std::vector<Object*> frendList)
 {

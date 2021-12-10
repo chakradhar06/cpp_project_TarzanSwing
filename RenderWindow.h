@@ -20,8 +20,9 @@ public:
     void drawEnemyObject(std::vector<Object*> enemyList);
     void drawFrendObject(std::vector<Object*> frendList);
     void drawLine(Me* o1, Object* o2);
-    
     void dealTheDead();
+    SDL_Window* get_renderer_window();
+    SDL_Renderer* get_SDL_renderer();
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;

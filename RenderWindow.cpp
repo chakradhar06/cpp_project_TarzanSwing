@@ -10,12 +10,16 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 {
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
 
-    if (window == NULL)
+    if(window == NULL)
     {
         std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    
+    if(renderer == NULL)
+        std::cout << "Renderer could not be created! SDL Error:" << SDL_GetError() << std::endl;
+
 }
 
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
@@ -91,9 +95,9 @@ void RenderWindow::drawLine(Me* o1, Object* o2)
 void RenderWindow::dealTheDead()
 {
 //    clear();
-    TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 100);
+    TTF_Font* Sans = TTF_OpenFont("/Users/rahuljain/Documents/GameDevelopment/SDL_EXPERIMENTING/SDL_EXPERIMENTING/game.ttf", 100);
     SDL_Color White = {255, 255, 255};
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "LMAO DED!!", White);
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "!!LMAO DED!!", White);
 
     // now you can convert it into a texture
     SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -101,7 +105,7 @@ void RenderWindow::dealTheDead()
     SDL_Rect Message_rect; //create a rect
     Message_rect.x = 300;  //controls the rect's x coordinate
     Message_rect.y = 300; // controls the rect's y coordinte
-    Message_rect.w = 100; // controls the width of the rect
+    Message_rect.w = 600; // controls the width of the rect
     Message_rect.h = 100; // controls the height of the rect
 
     SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
@@ -130,4 +134,14 @@ void RenderWindow::render(SDL_Texture* p_tex)
 void RenderWindow::display()
 {
     SDL_RenderPresent(renderer);
+}
+
+SDL_Window* RenderWindow::get_renderer_window()
+{
+    return window;
+}
+
+SDL_Renderer* RenderWindow::get_SDL_renderer()
+{
+    return renderer;
 }
