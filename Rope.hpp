@@ -1,18 +1,14 @@
-//
-//  Rope.hpp
-//  SDL_EXPERIMENTING
-//
-//  Created by Rahul Jain on 04/12/21.
-//
-
 #ifndef Rope_hpp
 #define Rope_hpp
 
 #include <stdio.h>
 #include <math.h>
 #include <vector>
+
 #include "Object.hpp"
-#include "me.hpp"
+#include "Me.hpp"
+#include "Lava.hpp"
+
 #define K 0.0005
 #define originalLen 0
 
@@ -24,10 +20,10 @@ private:
     Vel2 initialVel;
     double ropeLength;
     Vec2 slackOccurence;
-//    double K, originalLen;
+
 public:
-//    Rope(Me* meNode,Object* otherNode);
-    bool RopeCalculus(bool slack,std::vector<Object*> enemyList, std::vector<Object*> frendList);
+
+    bool RopeCalculus(bool slack,std::vector<Object*> enemyList, std::vector<Object*> frendList, Lava* lava);
     
     void setInitialPosn(Vec2 posn){initialPosn = posn;}
     void setInitialVel(Vel2 vel){initialVel = vel;}
@@ -42,4 +38,4 @@ public:
     Vec2 getSlackOccurence(){return slackOccurence;}
 };
 
-#endif /* Rope_hpp */
+#endif 

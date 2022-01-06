@@ -1,54 +1,46 @@
-//
-//  Rope.cpp
-//  SDL_EXPERIMENTING
-//
-//  Created by Rahul Jain on 04/12/21.
-//
-
 #include "Rope.hpp"
 #include <climits>
 #include <iostream>
-    void Rope::setTarget(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList, std::vector<Object*> frendList)
-    {
-        double targetMouseDistance = INT_MAX;
-        for(auto it: enemyList)
-        {
-            double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
-            if(seperation < targetMouseDistance)
-            {
-                otherNode = it;
-                targetMouseDistance = seperation;
-            }
-        }
-        for(auto it: frendList)
-        {
-            double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
-            if(seperation < targetMouseDistance)
-            {
-                otherNode = it;
-                targetMouseDistance = seperation;
-            }
-        }
-        meNode = hero;
-        initialPosn = otherNode->getPosn();
-        initialVel = otherNode->getVel();
-        ropeLength = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
-        ropeLength = pow(ropeLength,0.5);
-    }
 
-    double Rope::giveInitialSep()
+void Rope::setTarget(SDL_MouseButtonEvent& b, Me* hero, std::vector<Object*> enemyList, std::vector<Object*> frendList)
+{
+    double targetMouseDistance = INT_MAX;
+    for(auto it: enemyList)
     {
-        double seperation = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
-        return seperation;
+        double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
+        if(seperation < targetMouseDistance)
+        {
+            otherNode = it;
+            targetMouseDistance = seperation;
+        }
     }
+    for(auto it: frendList)
+    {
+        double seperation = pow((b.x - it->getPosn().x),2) + pow((b.y - it->getPosn().y),2);
+        if(seperation < targetMouseDistance)
+        {
+            otherNode = it;
+            targetMouseDistance = seperation;
+        }
+    }
+    meNode = hero;
+    initialPosn = otherNode->getPosn();
+    initialVel = otherNode->getVel();
+    ropeLength = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
+    ropeLength = pow(ropeLength,0.5);
+}
+
+double Rope::giveInitialSep()
+{
+    double seperation = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
+    return seperation;
+}
     
-bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<Object*> frendList)
+bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<Object*> frendList, Lava* lava)
 {
     double seperation = pow((otherNode->getPosn().y - meNode->getPosn().y ),2) + pow((otherNode->getPosn().x - meNode->getPosn().x ),2);
     seperation = pow(seperation,0.5);
-//        double acc = K*(seperation - originalLen);///meNode->getMass();
-    
-    //cloclwise counterclockwise issue resolution
+
     bool counterClock = true;
 
     if(initialPosn.x - meNode->getPosn().x > 0 && initialVel.Vy>0)
@@ -69,6 +61,7 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
             it->setAcc_y(-gravity);
         for(auto it: frendList)
             it->setAcc_y(-gravity);
+        lava->setAcc_y(-gravity);
         return false;
     }
     if(Vsqr <= 0 && Roped )
@@ -76,23 +69,17 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
         std::cout<<"relPosn: "<<(otherNode->getPosn().y - meNode->getPosn().y)<<std::endl;
         return false;
     }
-//        if(Vsqr <= 0 && Roped && (otherNode->getPosn().y - meNode->getPosn().y)>0 )
-//        {
-//            std::cout<<"relPosn: "<<(otherNode->getPosn().y - meNode->getPosn().y)<<std::endl;
-//            return false;
-//        }
-//        if(Vsqr <= 0 && Roped && (otherNode->getPosn().y - meNode->getPosn().y)<0 )
-//        {
-//            //donta have the logic for this
-//        }
+
     //Normal condition
     if(counterClock == true)
     {
-//            std::cout<<"CounterClockwise"<<std::endl;
+
         for(auto it:enemyList) it->setAcc_x(0);
         for(auto it:enemyList) it->setAcc_y(0);
         for(auto it:frendList) it->setAcc_x(0);
         for(auto it:frendList) it->setAcc_y(0);
+        lava->setAcc_y(0);
+        lava->setAcc_x(0);
         
         double Vnet = pow(Vsqr,.5);
 
@@ -100,21 +87,23 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
         {
             if(YwrtO < 0)
             {
-//                    meNode->setVel_x(-Vnet);
-//                    meNode->setVel_y(0);
+
                 for(auto it:enemyList) it->setVel_x(-Vnet);
                 for(auto it:frendList) it->setVel_x(-Vnet);
                 for(auto it:frendList) it->setVel_y(0);
                 for(auto it:enemyList) it->setVel_y(0);
+                lava->setVel_x(0);
+                lava->setVel_y(0);
             }
             else
             {
-//                    meNode->setVel_x(Vnet);
-//                    meNode->setVel_y(0);
+
                 for(auto it:enemyList) it->setVel_x(Vnet);
                 for(auto it:frendList) it->setVel_x(Vnet);
                 for(auto it:frendList) it->setVel_y(0);
                 for(auto it:enemyList) it->setVel_y(0);
+                lava->setVel_x(0);
+                lava->setVel_y(0);
             }
         }
         else
@@ -132,6 +121,9 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(-Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(Vnet*sin(theta));
+
             }
             //2nd quadrant tick
             //sin- cos+
@@ -144,6 +136,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(-Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(-Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(-Vnet*sin(theta));
             }
             //3rd quadrant tick
             //sin- cos-
@@ -156,6 +150,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(-Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(-Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(-Vnet*sin(theta));
             }
             //4th quadrant tick
             //sin+ cos-
@@ -168,6 +164,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(-Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(Vnet*sin(theta));
             }
             
         }
@@ -179,6 +177,9 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
         for(auto it:enemyList) it->setAcc_y(0);
         for(auto it:frendList) it->setAcc_x(0);
         for(auto it:frendList) it->setAcc_y(0);
+        lava->setAcc_y(0);
+        lava->setAcc_x(0);
+
         double Vnet = pow(Vsqr,.5);
 //            std::cout<<"Vel: "<<Vnet<<std::endl;
 
@@ -192,6 +193,9 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(Vnet);
                 for(auto it:frendList) it->setVel_y(0);
                 for(auto it:enemyList) it->setVel_y(0);
+                lava->setVel_y(0);
+                lava->setVel_x(0);
+
             }
             else
             {
@@ -201,6 +205,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(-Vnet);
                 for(auto it:frendList) it->setVel_y(0);
                 for(auto it:enemyList) it->setVel_y(0);
+                lava->setVel_y(0);
+                lava->setVel_x(0);
             }
         }
         else
@@ -217,6 +223,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(-Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(-Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(-Vnet*sin(theta));
             }
             //2nd quadrant tick
             //sin- cos+
@@ -228,6 +236,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(-Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(Vnet*sin(theta));
             }
             //3rd quadrant tick
             //sin- cos-
@@ -239,6 +249,8 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(-Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(Vnet*sin(theta));
             }
             //4th quadrant tick
             //sin+ cos-
@@ -250,10 +262,11 @@ bool Rope::RopeCalculus(bool Roped, std::vector<Object*> enemyList, std::vector<
                 for(auto it:frendList) it->setVel_x(Vnet*cos(theta));
                 for(auto it:frendList) it->setVel_y(-Vnet*sin(theta));
                 for(auto it:enemyList) it->setVel_y(-Vnet*sin(theta));
+                lava->setVel_x(0);
+                lava->setVel_y(-Vnet*sin(theta));
             }
             
         }
     }
     return true;
 }
-    

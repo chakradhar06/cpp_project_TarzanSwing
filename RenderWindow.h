@@ -5,7 +5,9 @@
 
 #include <vector>
 #include "Object.hpp"
-#include "me.hpp"
+#include "Me.hpp"
+#include "LTexture.hpp"
+#include "Lava.hpp"
 
 class RenderWindow
 {
@@ -20,7 +22,10 @@ public:
     void drawEnemyObject(std::vector<Object*> enemyList);
     void drawFrendObject(std::vector<Object*> frendList);
     void drawLine(Me* o1, Object* o2);
-    void dealTheDead();
+    void main_menu(LTexture* TextTexture1, LTexture* TextTexture2, LTexture* TextTexture3);
+    void score_menu(int TotalScore, LTexture* TextTexture1, LTexture* TextTexture2);
+    void end_menu(int TotalScore,  int HighScore, LTexture* TextTexture, LTexture* TextTexture1, LTexture* TextTexture2, LTexture* TextTexture3, LTexture* TextTexture4, LTexture* TextTexture5, LTexture* TextTexture6);
+    void drawLava(Lava* lava);
     SDL_Window* get_renderer_window();
     SDL_Renderer* get_SDL_renderer();
 private:

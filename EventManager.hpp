@@ -13,17 +13,17 @@
 
 #include "Rope.hpp"
 #include "RenderWindow.h"
-#include "me.hpp"
+#include "Me.hpp"
 #include "Object.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 class eventManager{
 public:
-//    eventManager();
-    bool Exit_MouseClick(int x, int y, int text_width, int scr_width);
+    bool Exit_MouseClick(int x, int y, int text_y, int text_width, int scr_width);
     bool Play_MouseClick(int x, int y, int text_width, int scr_width);
+    bool Retry_MouseClick(int x, int y, int text_width, int scr_width);
     bool MouseClick(SDL_MouseButtonEvent& b, Rope* aRope, Me* mainObject, std::vector<Object*> enemyList, std::vector<Object*> frendList);
 };
 
-#endif /* EventManager_hpp */
+#endif 

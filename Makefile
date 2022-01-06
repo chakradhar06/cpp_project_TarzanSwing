@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = EventManager.cpp main.cpp me.cpp Object.cpp RenderWindow.cpp Rope.cpp
+OBJS = EventManager.cpp main.cpp Me.cpp Object.cpp RenderWindow.cpp Rope.cpp LTexture.cpp ObjectManager.cpp
 
 #CC specifies which compiler we're using
 CC = g++
